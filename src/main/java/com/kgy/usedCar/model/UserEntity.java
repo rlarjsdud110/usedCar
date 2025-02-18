@@ -37,13 +37,13 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
-    public static UserEntity of(UserSignupRequest request){
+    public static UserEntity of(UserSignupRequest request, String encodedPassword){
 
         return UserEntity.builder()
                 .userId(request.getUserId())
                 .email(request.getEmail())
                 .name(request.getName())
-                .password(request.getPassword())
+                .password(encodedPassword)
                 .phone(request.getPhone())
                 .role(UserRole.USER)
                 .build();
