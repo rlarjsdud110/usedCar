@@ -14,3 +14,7 @@ spring:
         format_sql: true
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+jwt:
+  secret_key: rlarjsdud_used_car_2025.secret_key
+  token_expired_time: 10800000
+

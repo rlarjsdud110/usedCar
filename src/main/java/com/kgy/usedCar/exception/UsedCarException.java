@@ -10,6 +10,11 @@ public class UsedCarException extends RuntimeException{
     private ErrorCode errorCode;
     private String message;
 
+    public UsedCarException(ErrorCode errorCode){
+        this.errorCode = errorCode;
+        this.message = null;
+    }
+
     @Override
     public String getMessage(){
         if(message == null){
