@@ -1,8 +1,6 @@
-package com.kgy.usedCar.dto.request;
+package com.kgy.usedCar.dto.request.user;
 
 import lombok.Getter;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class UserSignupRequest {

@@ -1,6 +1,6 @@
 package com.kgy.usedCar.model;
 
-import com.kgy.usedCar.dto.request.UserSignupRequest;
+import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import lombok.*;
 import javax.persistence.*;
 

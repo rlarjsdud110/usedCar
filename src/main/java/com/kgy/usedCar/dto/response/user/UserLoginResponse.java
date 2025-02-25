@@ -1,4 +1,4 @@
-package com.kgy.usedCar.dto.response;
+package com.kgy.usedCar.dto.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

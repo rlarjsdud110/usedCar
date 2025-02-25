@@ -1,8 +1,9 @@
 package com.kgy.usedCar.service;
 
 import com.kgy.usedCar.config.JwtTokenProvider;
-import com.kgy.usedCar.dto.request.UserLoginRequest;
-import com.kgy.usedCar.dto.request.UserSignupRequest;
+import com.kgy.usedCar.dto.response.user.UserDto;
+import com.kgy.usedCar.dto.request.user.UserLoginRequest;
+import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import com.kgy.usedCar.exception.ErrorCode;
 import com.kgy.usedCar.exception.UsedCarException;
 import com.kgy.usedCar.model.UserEntity;
@@ -32,13 +33,14 @@ public class UserService {
     }
 
     public String login(UserLoginRequest request){
-        UserEntity userEntity = userRepository.findByUserId(request.getUserId())
+        UserDto userDto = userRepository.findByUserId(request.getUserId()).map(UserDto::fromEntity)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
 
-        if(!passwordEncoder.matches(request.getPassword(), userEntity.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(), userDto.getPassword())){
             throw new UsedCarException(ErrorCode.INVALID_PASSWORD, "");
         }
 
-        return tokenProvider.generateToken(request.getUserId());
+        return tokenProvider.generateToken(userDto);
     }
+
 }
