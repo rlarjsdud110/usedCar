@@ -30,7 +30,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests(auth -> auth
-                        .mvcMatchers("/api/users/signup", "/api/users/login", "/api/cars/hotDeals", "/api/cars/rankings").permitAll()
+                        .mvcMatchers("/api/users/signup", "/api/users/login", "/api/cars/hotDeals",
+                                "/api/cars/rankings", "/api/notice/list").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
