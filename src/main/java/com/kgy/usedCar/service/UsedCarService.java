@@ -3,12 +3,17 @@ package com.kgy.usedCar.service;
 import com.kgy.usedCar.dto.response.car.CarRankingDto;
 import com.kgy.usedCar.dto.response.car.HotDealResponseDto;
 import com.kgy.usedCar.dto.response.car.RankingResponseDto;
+import com.kgy.usedCar.dto.response.car.SearchResponseDto;
+import com.kgy.usedCar.exception.ErrorCode;
+import com.kgy.usedCar.exception.UsedCarException;
 import com.kgy.usedCar.model.UsedCarEntity;
 import com.kgy.usedCar.repository.UsedCarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,5 +52,17 @@ public class UsedCarService {
                 .toList();
 
         return new RankingResponseDto(viewRankingDto, recentRankingDto);
+    }
+
+    public List<SearchResponseDto> searchCars(String searchName){
+        if(searchName.length() < 2){
+            throw new UsedCarException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+
+        List<UsedCarEntity> usedCarEntity = usedCarRepository.findByModelContaining(searchName);
+
+        return usedCarEntity.stream()
+                .map(SearchResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }

@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests(auth -> auth
                         .mvcMatchers("/api/users/signup", "/api/users/login", "/api/cars/hotDeals",
-                                "/api/cars/rankings", "/api/notice/list").permitAll()
+                                "/api/cars/rankings", "/api/notice/list", "/api/cars/search").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
