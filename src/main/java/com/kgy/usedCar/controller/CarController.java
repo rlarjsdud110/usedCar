@@ -2,6 +2,7 @@ package com.kgy.usedCar.controller;
 
 import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.car.HotDealResponseDto;
+import com.kgy.usedCar.dto.response.car.RankingResponseDto;
 import com.kgy.usedCar.service.UsedCarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,11 @@ public class CarController {
     public Response<List<HotDealResponseDto>> getHotDeals(){
         List<HotDealResponseDto> hotDealResponseList = usedCarService.getHotDeals();
         return Response.success(hotDealResponseList);
+    }
+
+    @GetMapping("/rankings")
+    public Response<RankingResponseDto> getRankings(){
+        RankingResponseDto rankings = usedCarService.getRankings();
+        return Response.success(rankings);
     }
 }

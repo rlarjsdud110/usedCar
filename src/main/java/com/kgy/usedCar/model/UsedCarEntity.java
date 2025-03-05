@@ -41,11 +41,17 @@ public class UsedCarEntity extends BaseEntity{
     @Column(name = "price")
     private int price;
 
+    @Column(name = "discounted_price")
+    private int discountedPrice;
+
     @Column(name = "fuel_type")
     private String fuelType;
 
     @Column(name = "is_hot_deal")
     private boolean isHotDeal = false;
+
+    @Column(name = "view_count")
+    private int viewCount;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

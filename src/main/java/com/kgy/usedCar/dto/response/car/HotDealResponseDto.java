@@ -15,6 +15,7 @@ public class HotDealResponseDto {
     private int mileage;
     private String fuelType;
     private int price;
+    private int discountedPrice;
 
     public static HotDealResponseDto fromEntity(UsedCarEntity entity){
         return new HotDealResponseDto(
@@ -23,7 +24,8 @@ public class HotDealResponseDto {
                 entity.getModelYear(),
                 entity.getMileage(),
                 entity.getFuelType(),
-                entity.getPrice()
+                entity.getPrice(),
+                entity.getDiscountedPrice()
         );
     }
 }
