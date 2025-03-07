@@ -3,6 +3,7 @@ package com.kgy.usedCar.controller;
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import com.kgy.usedCar.dto.response.Response;
+import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.dto.response.user.UserLoginResponse;
 import com.kgy.usedCar.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +30,10 @@ public class UserController {
         return Response.success(new UserLoginResponse(token));
     }
 
+    @GetMapping("/userInfo")
+    public Response<UserInfoResponseDto> userInfo(Principal userId){
+        System.out.println(userId.getName());
+        UserInfoResponseDto userInfo = userService.userInfo(userId.getName());
+        return Response.success(userInfo);
+    }
 }
