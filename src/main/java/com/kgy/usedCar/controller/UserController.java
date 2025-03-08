@@ -2,7 +2,10 @@ package com.kgy.usedCar.controller;
 
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
+import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
 import com.kgy.usedCar.dto.response.Response;
+import com.kgy.usedCar.dto.response.user.CartResponseDto;
+import com.kgy.usedCar.dto.response.user.ConsultResponseDto;
 import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.dto.response.user.UserLoginResponse;
 import com.kgy.usedCar.service.UserService;
@@ -10,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,8 +36,38 @@ public class UserController {
 
     @GetMapping("/userInfo")
     public Response<UserInfoResponseDto> userInfo(Principal userId){
-        System.out.println(userId.getName());
         UserInfoResponseDto userInfo = userService.userInfo(userId.getName());
         return Response.success(userInfo);
+    }
+
+    @PutMapping("/update")
+    public Response<UserInfoResponseDto> update(Principal principal, @RequestBody UserUpdateRequestDto dto){
+        UserInfoResponseDto userInfo = userService.update(principal.getName(), dto);
+        return Response.success(userInfo);
+    }
+
+    @GetMapping("/cart")
+    public Response<List<CartResponseDto>> getCart(Principal principal){
+        List<CartResponseDto> cartList = userService.getCart(principal.getName());
+        return Response.success(cartList);
+    }
+
+    @PostMapping("/cart/add/{carId}")
+    public Response<Void> addCart(@PathVariable Long carId, Principal principal){
+        userService.addCart(carId, principal.getName());
+        return Response.success();
+    }
+
+    @DeleteMapping("/cart/delete/{carId}")
+    public Response<Void> deleteCart(@PathVariable Long carId){
+        System.out.println(carId);
+        userService.deleteCart(carId);
+        return Response.success();
+    }
+
+    @GetMapping("/consult")
+    public Response<List<ConsultResponseDto>> consultList(Principal principal){
+        List<ConsultResponseDto> consultList = userService.consultList(principal.getName());
+        return Response.success(consultList);
     }
 }

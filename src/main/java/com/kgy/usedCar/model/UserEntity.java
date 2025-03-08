@@ -1,6 +1,7 @@
 package com.kgy.usedCar.model;
 
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
+import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
 import lombok.*;
 import javax.persistence.*;
 
@@ -37,7 +38,7 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
-    public static UserEntity of(UserSignupRequest request, String encodedPassword){
+    public static UserEntity of(UserSignupRequest request, String encodedPassword) {
 
         return UserEntity.builder()
                 .userId(request.getUserId())
@@ -48,4 +49,10 @@ public class UserEntity extends BaseEntity {
                 .role(UserRole.USER)
                 .build();
     }
+    public void update(UserUpdateRequestDto dto){
+        this.setName(dto.getName());
+        this.setEmail(dto.getEmail());
+        this.setPhone(dto.getPhone());
+    }
+
 }
