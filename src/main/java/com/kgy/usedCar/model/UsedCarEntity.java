@@ -1,12 +1,14 @@
 package com.kgy.usedCar.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.kgy.usedCar.dto.request.car.UsedCarDto;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "used_car")
 public class UsedCarEntity extends BaseEntity{
@@ -56,4 +58,23 @@ public class UsedCarEntity extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    public static UsedCarEntity fromDto(UsedCarDto dto, UserEntity user) {
+        return UsedCarEntity.builder()
+                .model(dto.getModel())
+                .carType(dto.getCarType())
+                .transmission(dto.getTransmission())
+                .licensePlate(dto.getLicensePlate())
+                .engine(dto.getEngine())
+                .color(dto.getColor())
+                .modelYear(dto.getModelYear())
+                .mileage(dto.getMileage())
+                .price(dto.getPrice())
+                .discountedPrice(dto.getDiscountedPrice())
+                .fuelType(dto.getFuelType())
+                .isHotDeal(dto.isHotDeal())
+                .viewCount(dto.getViewCount())
+                .user(user)
+                .build();
+    }
 }
