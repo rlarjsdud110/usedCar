@@ -10,6 +10,7 @@ import java.util.List;
 public interface UsedCarRepository extends JpaRepository<UsedCarEntity, Long> {
     List<UsedCarEntity> findTop5ByOrderByViewCountDesc();
     List<UsedCarEntity> findTop5ByOrderByCreatedAtDesc();
+    List<UsedCarEntity> findByIsHotDealTrue();
 
     List<UsedCarEntity> findByModelContaining(String searchName);
 }

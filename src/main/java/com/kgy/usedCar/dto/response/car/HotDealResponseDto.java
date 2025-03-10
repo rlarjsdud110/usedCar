@@ -2,11 +2,15 @@ package com.kgy.usedCar.dto.response.car;
 
 import com.kgy.usedCar.model.UsedCarEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 public class HotDealResponseDto {
     private long id;
@@ -16,16 +20,19 @@ public class HotDealResponseDto {
     private String fuelType;
     private int price;
     private int discountedPrice;
+    private String imagesUrls;
 
-    public static HotDealResponseDto fromEntity(UsedCarEntity entity){
-        return new HotDealResponseDto(
-                entity.getId(),
-                entity.getModel(),
-                entity.getModelYear(),
-                entity.getMileage(),
-                entity.getFuelType(),
-                entity.getPrice(),
-                entity.getDiscountedPrice()
-        );
+    public static HotDealResponseDto fromEntity(UsedCarEntity entity, String imagesUrls){
+        return HotDealResponseDto.builder()
+                .id(entity.getId())
+                .model(entity.getModel())
+                .modelYear(entity.getModelYear())
+                .mileage(entity.getMileage())
+                .fuelType(entity.getFuelType())
+                .price(entity.getPrice())
+                .discountedPrice(entity.getDiscountedPrice())
+                .imagesUrls(imagesUrls)
+                .build();
     }
+
 }
