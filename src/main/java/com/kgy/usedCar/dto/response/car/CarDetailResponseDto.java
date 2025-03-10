@@ -25,6 +25,7 @@ public class CarDetailResponseDto {
     private int discountedPrice;        // 할인된 가격
     private String fuelType;            // 연료 유형
     private boolean isHotDeal = false;  // 이벤트
+    private int viewCount;              // 조회수
 
     private boolean frontRearSensor;    //전후방 센서
     private boolean rearSensor;         //후방 센서
@@ -53,6 +54,7 @@ public class CarDetailResponseDto {
                 .discountedPrice(usedCarEntity.getDiscountedPrice())
                 .fuelType(usedCarEntity.getFuelType())
                 .isHotDeal(usedCarEntity.isHotDeal())
+                .viewCount(usedCarEntity.getViewCount())
                 .frontRearSensor(carOptionsEntity.isFrontRearSensor())
                 .rearSensor(carOptionsEntity.isRearSensor())
                 .frontSensor(carOptionsEntity.isFrontSensor())

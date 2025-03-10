@@ -83,9 +83,9 @@ public class UsedCarService {
 
 
     public RankingResponseDto getRankings() {
-        // 조회순위
+
         List<UsedCarEntity> viewRankings = usedCarRepository.findTop5ByOrderByViewCountDesc();
-        // 최신등록순위
+
         List<UsedCarEntity> recentRankings = usedCarRepository.findTop5ByOrderByCreatedAtDesc();
 
         List<CarRankingDto> viewRankingDto = viewRankings.stream()
@@ -96,14 +96,11 @@ public class UsedCarService {
                 .map(car -> new CarRankingDto(car.getId(), car.getModel()))
                 .toList();
 
+
         return new RankingResponseDto(viewRankingDto, recentRankingDto);
     }
 
     public List<SearchResponseDto> searchCars(String searchName){
-        if(searchName.length() < 2){
-            throw new UsedCarException(ErrorCode.INTERNAL_SERVER_ERROR);
-        }
-
         List<UsedCarEntity> usedCarEntity = usedCarRepository.findByModelContaining(searchName);
 
         return usedCarEntity.stream()
@@ -118,9 +115,30 @@ public class UsedCarService {
         CarOptionEntity carOptionsEntity = carOptionRepository.findByUsedCar_Id(carId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
 
+        usedCarEntity.setViewCount(usedCarEntity.getViewCount() + 1);
+        usedCarRepository.save(usedCarEntity);
+
         List<String> carImagesUrl = getImageUrls(carId);
 
         return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl);
+    }
+
+    public List<CarListResponseDto> carList(){
+        List<UsedCarEntity> usedCarEntity = usedCarRepository.findAll();
+        if(usedCarEntity.isEmpty()){
+            return null;
+        }
+
+        List<CarListResponseDto> carListDto = new ArrayList<>();
+
+        for(UsedCarEntity entity : usedCarEntity){
+            String imageUrl = getImageUrl(entity.getId());
+
+            CarListResponseDto carDto = CarListResponseDto.fromEntity(entity, imageUrl);
+            carListDto.add(carDto);
+        }
+
+        return carListDto;
     }
 
     private String getImageUrl(Long usedCarId) {

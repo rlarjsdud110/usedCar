@@ -2,10 +2,7 @@ package com.kgy.usedCar.controller;
 
 import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.Response;
-import com.kgy.usedCar.dto.response.car.CarDetailResponseDto;
-import com.kgy.usedCar.dto.response.car.HotDealResponseDto;
-import com.kgy.usedCar.dto.response.car.RankingResponseDto;
-import com.kgy.usedCar.dto.response.car.SearchResponseDto;
+import com.kgy.usedCar.dto.response.car.*;
 import com.kgy.usedCar.service.UsedCarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -45,8 +42,8 @@ public class UsedCarController {
     }
 
     @GetMapping("/search")
-    public Response<List<SearchResponseDto>> searchCars(@RequestParam String searchName){
-        List<SearchResponseDto> searchCarList = usedCarService.searchCars(searchName);
+    public Response<List<SearchResponseDto>> searchCars(@RequestParam(required = false) String search){
+        List<SearchResponseDto> searchCarList = usedCarService.searchCars(search);
         return Response.success(searchCarList);
     }
 
@@ -55,4 +52,11 @@ public class UsedCarController {
         CarDetailResponseDto carDetail = usedCarService.carDetail(carId);
         return Response.success(carDetail);
     }
+
+    @GetMapping("/carList")
+    public Response<List<CarListResponseDto>> carList(){
+        List<CarListResponseDto> carList = usedCarService.carList();
+        return Response.success(carList);
+    }
+
 }
