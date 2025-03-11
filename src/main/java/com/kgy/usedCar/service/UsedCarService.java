@@ -13,6 +13,9 @@ import com.kgy.usedCar.repository.CarOptionRepository;
 import com.kgy.usedCar.repository.UsedCarRepository;
 import com.kgy.usedCar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,12 +103,21 @@ public class UsedCarService {
         return new RankingResponseDto(viewRankingDto, recentRankingDto);
     }
 
-    public List<SearchResponseDto> searchCars(String searchName){
-        List<UsedCarEntity> usedCarEntity = usedCarRepository.findByModelContaining(searchName);
+    public Page<SearchResponseDto> searchCars(Pageable pageable, String searchName){
+        Page<UsedCarEntity> usedCarEntity = usedCarRepository.findByModelContaining(searchName, pageable);
 
-        return usedCarEntity.stream()
-                .map(SearchResponseDto::fromEntity)
-                .collect(Collectors.toList());
+        if (usedCarEntity.isEmpty()) {
+            return Page.empty();
+        }
+        List<SearchResponseDto> searchResponseDto = new ArrayList<>();
+
+        for (UsedCarEntity entity : usedCarEntity){
+            String imageUrl = getImageUrl(entity.getId());
+            SearchResponseDto dto = SearchResponseDto.fromEntity(entity, imageUrl);
+            searchResponseDto.add(dto);
+        }
+
+        return new PageImpl<>(searchResponseDto, pageable, usedCarEntity.getTotalElements());
     }
 
     public CarDetailResponseDto carDetail(Long carId){
@@ -123,22 +135,20 @@ public class UsedCarService {
         return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl);
     }
 
-    public List<CarListResponseDto> carList(){
-        List<UsedCarEntity> usedCarEntity = usedCarRepository.findAll();
-        if(usedCarEntity.isEmpty()){
-            return null;
+    public Page<CarListResponseDto> carList(Pageable pageable){
+        Page<UsedCarEntity> usedCarEntity = usedCarRepository.findAll(pageable);
+        if (usedCarEntity.isEmpty()) {
+            return Page.empty();
         }
 
-        List<CarListResponseDto> carListDto = new ArrayList<>();
-
-        for(UsedCarEntity entity : usedCarEntity){
+        List<CarListResponseDto> carListResponseDto = new ArrayList<>();
+        for (UsedCarEntity entity : usedCarEntity) {
             String imageUrl = getImageUrl(entity.getId());
-
-            CarListResponseDto carDto = CarListResponseDto.fromEntity(entity, imageUrl);
-            carListDto.add(carDto);
+            CarListResponseDto dto = CarListResponseDto.fromEntity(entity, imageUrl);
+            carListResponseDto.add(dto);
         }
 
-        return carListDto;
+        return new PageImpl<>(carListResponseDto, pageable, usedCarEntity.getTotalElements());
     }
 
     private String getImageUrl(Long usedCarId) {
@@ -154,6 +164,7 @@ public class UsedCarService {
         if (carImageEntities.isEmpty()) {
             return Collections.emptyList();
         }
+
 
         return carImageEntities.stream()
                 .map(CarImageEntity::getImageUrl)

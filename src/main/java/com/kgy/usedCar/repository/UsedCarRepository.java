@@ -1,6 +1,8 @@
 package com.kgy.usedCar.repository;
 
 import com.kgy.usedCar.model.UsedCarEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,5 @@ public interface UsedCarRepository extends JpaRepository<UsedCarEntity, Long> {
     List<UsedCarEntity> findTop5ByOrderByCreatedAtDesc();
     List<UsedCarEntity> findByIsHotDealTrue();
 
-    List<UsedCarEntity> findByModelContaining(String searchName);
+    Page<UsedCarEntity> findByModelContaining(String searchName, Pageable pageable);
 }

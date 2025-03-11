@@ -17,9 +17,9 @@ public class CarListResponseDto {
     private int price;
     private int discountedPrice;
     private boolean isHotDeal;
-    private String imagesUrls;
+    private String imageUrl;
 
-    public static CarListResponseDto fromEntity(UsedCarEntity entity, String imagesUrls){
+    public static CarListResponseDto fromEntity(UsedCarEntity entity, String imageUrl){
         return CarListResponseDto.builder()
                 .id(entity.getId())
                 .model(entity.getModel())
@@ -29,7 +29,7 @@ public class CarListResponseDto {
                 .price(entity.getPrice())
                 .discountedPrice(entity.getDiscountedPrice())
                 .isHotDeal(entity.isHotDeal())
-                .imagesUrls(imagesUrls)
+                .imageUrl(imageUrl)
                 .build();
     }
 }

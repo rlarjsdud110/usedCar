@@ -2,10 +2,12 @@ package com.kgy.usedCar.dto.response.car;
 
 import com.kgy.usedCar.model.UsedCarEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+@Builder
 public class SearchResponseDto {
     private long id;
     private String model;
@@ -15,17 +17,19 @@ public class SearchResponseDto {
     private int price;
     private int discountedPrice;
     private boolean isHotDeal;
+    private String imageUrl;
 
-    public static SearchResponseDto fromEntity(UsedCarEntity entity){
-        return new SearchResponseDto(
-                entity.getId(),
-                entity.getModel(),
-                entity.getModelYear(),
-                entity.getMileage(),
-                entity.getFuelType(),
-                entity.getPrice(),
-                entity.getDiscountedPrice(),
-                entity.isHotDeal()
-        );
+    public static SearchResponseDto fromEntity(UsedCarEntity entity, String imageUrl){
+        return SearchResponseDto.builder()
+                .id(entity.getId())
+                .model(entity.getModel())
+                .modelYear(entity.getModelYear())
+                .mileage(entity.getMileage())
+                .fuelType(entity.getFuelType())
+                .price(entity.getPrice())
+                .discountedPrice(entity.getDiscountedPrice())
+                .isHotDeal(entity.isHotDeal())
+                .imageUrl(imageUrl)
+                .build();
     }
 }

@@ -5,9 +5,11 @@ import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.car.*;
 import com.kgy.usedCar.service.UsedCarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -42,8 +44,8 @@ public class UsedCarController {
     }
 
     @GetMapping("/search")
-    public Response<List<SearchResponseDto>> searchCars(@RequestParam(required = false) String search){
-        List<SearchResponseDto> searchCarList = usedCarService.searchCars(search);
+    public Response<Page<SearchResponseDto>> searchCars(Pageable pageable, @RequestParam(required = false) String search){
+        Page<SearchResponseDto> searchCarList = usedCarService.searchCars(pageable, search);
         return Response.success(searchCarList);
     }
 
@@ -54,8 +56,8 @@ public class UsedCarController {
     }
 
     @GetMapping("/carList")
-    public Response<List<CarListResponseDto>> carList(){
-        List<CarListResponseDto> carList = usedCarService.carList();
+    public Response<Page<CarListResponseDto>> carList(Pageable pageable){
+        Page<CarListResponseDto> carList = usedCarService.carList(pageable);
         return Response.success(carList);
     }
 
