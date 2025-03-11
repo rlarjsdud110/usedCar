@@ -25,4 +25,11 @@ public class CartEntity extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "used_car_id")
     private UsedCarEntity usedCar;
+
+    public static CartEntity of(UserEntity user, UsedCarEntity usedCar){
+        return CartEntity.builder()
+                .user(user)
+                .usedCar(usedCar)
+                .build();
+    }
 }

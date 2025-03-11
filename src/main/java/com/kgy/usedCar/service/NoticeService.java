@@ -28,7 +28,6 @@ public class NoticeService {
                 .toList();
     }
 
-    @Transactional
     public void createNotice(NoticeResponseDto dto){
         NoticeEntity noticeEntity = NoticeEntity.builder()
                 .title(dto.getTitle())
@@ -38,7 +37,6 @@ public class NoticeService {
         noticeRepository.save(noticeEntity);
     }
 
-    @Transactional
     public void updateNotice(Long id, NoticeResponseDto dto){
         NoticeEntity noticeEntity = noticeRepository.findById(id)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.NOTICE_NOT_FOUND));
@@ -46,7 +44,6 @@ public class NoticeService {
         noticeEntity.update(dto.getTitle(), dto.getContent());
     }
 
-    @Transactional
     public void deleteNotice(Long id){
         NoticeEntity noticeEntity = noticeRepository.findById(id)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.NOTICE_NOT_FOUND));

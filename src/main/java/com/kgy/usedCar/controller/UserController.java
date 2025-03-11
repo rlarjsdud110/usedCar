@@ -60,7 +60,6 @@ public class UserController {
 
     @DeleteMapping("/cart/delete/{carId}")
     public Response<Void> deleteCart(@PathVariable Long carId){
-        System.out.println(carId);
         userService.deleteCart(carId);
         return Response.success();
     }
@@ -70,4 +69,5 @@ public class UserController {
         List<ConsultResponseDto> consultList = userService.consultList(principal.getName());
         return Response.success(consultList);
     }
+
 }

@@ -37,9 +37,10 @@ public class CarDetailResponseDto {
     private boolean ledHeadlight;       //LED 라이트
     private boolean sunroof;            //썬루프
 
+    private boolean isCart;
     private List<String> imagesUrl;
 
-    public static CarDetailResponseDto fromEntity(UsedCarEntity usedCarEntity, CarOptionEntity carOptionsEntity, List<String> imagesUrl) {
+    public static CarDetailResponseDto fromEntity(UsedCarEntity usedCarEntity, CarOptionEntity carOptionsEntity, List<String> imagesUrl, Boolean isCart) {
         return CarDetailResponseDto.builder()
                 .id(usedCarEntity.getId())
                 .model(usedCarEntity.getModel())
@@ -65,6 +66,7 @@ public class CarDetailResponseDto {
                 .ledHeadlight(carOptionsEntity.isLedHeadlight())
                 .sunroof(carOptionsEntity.isSunroof())
                 .imagesUrl(imagesUrl)
+                .isCart(isCart)
                 .build();
     }
 }

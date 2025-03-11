@@ -4,14 +4,8 @@ import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.car.*;
 import com.kgy.usedCar.exception.ErrorCode;
 import com.kgy.usedCar.exception.UsedCarException;
-import com.kgy.usedCar.model.CarImageEntity;
-import com.kgy.usedCar.model.CarOptionEntity;
-import com.kgy.usedCar.model.UsedCarEntity;
-import com.kgy.usedCar.model.UserEntity;
-import com.kgy.usedCar.repository.CarImageRepository;
-import com.kgy.usedCar.repository.CarOptionRepository;
-import com.kgy.usedCar.repository.UsedCarRepository;
-import com.kgy.usedCar.repository.UserRepository;
+import com.kgy.usedCar.model.*;
+import com.kgy.usedCar.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -34,6 +28,7 @@ public class UsedCarService {
     private final CarOptionRepository carOptionRepository;
     private final UserRepository userRepository;
     private final CarImageRepository carImageRepository;
+    private final CartRepository cartRepository;
 
     private final S3Service s3Service;
 
@@ -132,7 +127,9 @@ public class UsedCarService {
 
         List<String> carImagesUrl = getImageUrls(carId);
 
-        return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl);
+        boolean isCart = cartRepository.existsByUsedCar_Id(carId);
+
+        return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl, isCart);
     }
 
     public Page<CarListResponseDto> carList(Pageable pageable){
@@ -164,7 +161,6 @@ public class UsedCarService {
         if (carImageEntities.isEmpty()) {
             return Collections.emptyList();
         }
-
 
         return carImageEntities.stream()
                 .map(CarImageEntity::getImageUrl)

@@ -65,25 +65,19 @@ public class UserService {
     }
 
     public UserInfoResponseDto userInfo(String userId){
-        UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
-
+        UserEntity userEntity = findUserById(userId);
         return UserInfoResponseDto.fromEntity(userEntity);
     }
 
-    @Transactional
     public UserInfoResponseDto update(String userId, UserUpdateRequestDto dto){
-        UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
-
+        UserEntity userEntity = findUserById(userId);
         userEntity.update(dto);
 
         return UserInfoResponseDto.fromEntity(userEntity);
     }
 
     public List<ConsultResponseDto> consultList(String userId){
-        UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
+        UserEntity userEntity = findUserById(userId);
 
         List<ConsultEntity> consultEntity = consultRepository.findByUser_Id(userEntity.getId());
 
@@ -99,8 +93,7 @@ public class UserService {
     }
 
     public List<CartResponseDto> getCart(String userId){
-        UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
+        UserEntity userEntity = findUserById(userId);
 
         List<CartEntity> cartEntity = cartRepository.findByUser_Id(userEntity.getId());
 
@@ -113,25 +106,26 @@ public class UserService {
     }
 
     public void addCart(Long carId, String userId){
-        UserEntity userEntity = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
+        UserEntity userEntity = findUserById(userId);
+        UsedCarEntity usedCarEntity = findUsedCarById(carId);
 
-        UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
-
-        CartEntity cartEntity = CartEntity.builder()
-                .user(userEntity)
-                .usedCar(usedCarEntity)
-                .build();
-
-        cartRepository.save(cartEntity);
+        cartRepository.save(CartEntity.of(userEntity, usedCarEntity));
     }
 
-    @Transactional
     public void deleteCart(Long carId){
         CartEntity cartEntity = cartRepository.findByUsedCar_Id(carId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CART_NOT_FOUND));
 
         cartRepository.deleteById(cartEntity.getId());
+    }
+
+    private UserEntity findUserById(String userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private UsedCarEntity findUsedCarById(Long carId) {
+        return usedCarRepository.findById(carId)
+                .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
     }
 }
