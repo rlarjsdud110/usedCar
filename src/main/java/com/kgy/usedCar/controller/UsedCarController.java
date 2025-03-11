@@ -55,6 +55,12 @@ public class UsedCarController {
         return Response.success(carDetail);
     }
 
+    @GetMapping("/recommend")
+    public Response<List<RecommendCarDto>> recommendCar() {
+        List<RecommendCarDto> recommendCarDto = usedCarService.recommendCar();
+        return Response.success(recommendCarDto);
+    }
+
     @GetMapping("/carList")
     public Response<Page<CarListResponseDto>> carList(Pageable pageable){
         Page<CarListResponseDto> carList = usedCarService.carList(pageable);

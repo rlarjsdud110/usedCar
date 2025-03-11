@@ -132,6 +132,22 @@ public class UsedCarService {
         return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl, isCart);
     }
 
+    public List<RecommendCarDto> recommendCar(){
+        List<UsedCarEntity> usedCarEntityList = usedCarRepository.findTop3ByOrderByViewCountDesc();
+        if(usedCarEntityList.isEmpty()){
+            return List.of();
+        }
+
+        List<RecommendCarDto> recommendCarDtoList = new ArrayList<>();
+        for (UsedCarEntity entity : usedCarEntityList){
+            String imageUrl = getImageUrl(entity.getId());
+            RecommendCarDto dto = RecommendCarDto.fromEntity(entity, imageUrl);
+
+            recommendCarDtoList.add(dto);
+        }
+        return recommendCarDtoList;
+    }
+
     public Page<CarListResponseDto> carList(Pageable pageable){
         Page<UsedCarEntity> usedCarEntity = usedCarRepository.findAll(pageable);
         if (usedCarEntity.isEmpty()) {
