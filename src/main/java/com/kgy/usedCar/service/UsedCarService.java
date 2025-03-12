@@ -44,7 +44,7 @@ public class UsedCarService {
             CarOptionEntity carOptionEntity = CarOptionEntity.fromDto(dto.getCarOptionsDto(), usedCar);
             carOptionRepository.save(carOptionEntity);
 
-            s3Service.uploadImage(multipartFiles, usedCar.getId(), dto.getImageTypes());
+            s3Service.uploadCarImages(multipartFiles, usedCar.getId(), dto.getImageTypes());
 
         } catch (IOException e) {
             throw new UsedCarException(ErrorCode.FILE_UPLOAD_FAILED);
@@ -56,11 +56,9 @@ public class UsedCarService {
         UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
 
-        boolean result = s3Service.deleteImage(carId);
+       s3Service.deleteCarImages(carId);
+       usedCarRepository.delete(usedCarEntity);
 
-        if(result){
-            usedCarRepository.delete(usedCarEntity);
-        }
     }
 
     public List<HotDealResponseDto> getHotDeals() {

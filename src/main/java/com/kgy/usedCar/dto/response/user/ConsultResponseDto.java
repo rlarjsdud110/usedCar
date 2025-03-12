@@ -12,5 +12,6 @@ public class ConsultResponseDto {
     private String title;
     private String statusType;
     private String taskType;
+    private String email;
     private LocalDateTime createdAt;
 }
