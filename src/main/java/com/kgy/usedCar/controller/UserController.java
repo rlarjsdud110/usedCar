@@ -1,13 +1,11 @@
 package com.kgy.usedCar.controller;
 
-import com.amazonaws.Request;
 import com.kgy.usedCar.dto.request.consult.ConsultRequestDto;
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
 import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.user.CartResponseDto;
-import com.kgy.usedCar.dto.response.user.ConsultResponseDto;
 import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.dto.response.user.UserLoginResponse;
 import com.kgy.usedCar.service.UserService;
@@ -67,31 +65,6 @@ public class UserController {
         return Response.success();
     }
 
-    @PostMapping("/consult")
-    public Response<Void> consultRequest(Principal principal, @RequestPart ConsultRequestDto dto,
-                                         @RequestPart(value = "file", required = false) MultipartFile[] multipartFile){
-        userService.consultRequest(principal.getName(), dto, multipartFile);
-        return Response.success();
-    }
-
-    @GetMapping("/consult")
-    public Response<List<ConsultResponseDto>> consultList(Principal principal){
-        List<ConsultResponseDto> consultList = userService.consultList(principal.getName());
-        return Response.success(consultList);
-    }
-
-    @PutMapping("/consult/{consultId}")
-    public Response<Void> consultUpdate(@PathVariable Long consultId, @RequestPart ConsultRequestDto dto,
-                                        @RequestPart(value = "file", required = false) MultipartFile[] multipartFile){
-        userService.consultUpdate(consultId, dto, multipartFile);
-        return Response.success();
-    }
-
-    @DeleteMapping("/consult/{consultId}")
-    public Response<Void> consultDelete(@PathVariable Long consultId){
-        userService.consultDelete(consultId);
-        return Response.success();
-    }
 
 
 }

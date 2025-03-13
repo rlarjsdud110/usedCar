@@ -1,4 +1,4 @@
-package com.kgy.usedCar.dto.response.user;
+package com.kgy.usedCar.dto.response.consult;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class ConsultResponseDto {
+public class ConsultListResponseDto {
     private Long id;
     private String title;
     private String statusType;
