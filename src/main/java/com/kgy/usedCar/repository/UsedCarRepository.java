@@ -15,4 +15,6 @@ public interface UsedCarRepository extends JpaRepository<UsedCarEntity, Long> {
     List<UsedCarEntity> findTop5ByOrderByCreatedAtDesc();
     List<UsedCarEntity> findByIsHotDealTrue();
     Page<UsedCarEntity> findByModelContaining(String searchName, Pageable pageable);
+
+    List<UsedCarEntity> findByUserId(Long userId);
 }

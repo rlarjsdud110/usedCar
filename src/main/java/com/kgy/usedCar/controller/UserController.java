@@ -6,6 +6,7 @@ import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
 import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.user.CartResponseDto;
+import com.kgy.usedCar.dto.response.user.PurchaseResponse;
 import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.dto.response.user.UserLoginResponse;
 import com.kgy.usedCar.service.UserService;
@@ -65,6 +66,22 @@ public class UserController {
         return Response.success();
     }
 
+    @PostMapping("/purchase/{carId}")
+    public Response<Void> purchaseRequest(Principal principal, @PathVariable Long carId){
+        userService.purchaseRequest(principal.getName(), carId);
+        return Response.success();
+    }
 
+    @GetMapping("/purchase")
+    public Response<List<PurchaseResponse>> purchaseList(Principal principal){
+        List<PurchaseResponse> purchaseResponseList = userService.purchaseList(principal.getName());
+        return Response.success(purchaseResponseList);
+    }
+
+    @DeleteMapping("/purchase/{purchaseId}")
+    public Response<Void> purchaseDelete(@PathVariable Long purchaseId) {
+        userService.purchaseDelete(purchaseId);
+        return Response.success();
+    }
 
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
-    List<CartEntity> findByUser_Id(Long userId);
+    List<CartEntity> findByUser_IdOrderByCreatedAtDesc(Long userId);
     Optional<CartEntity> findByUsedCar_Id(Long carId);
 
     boolean existsByUsedCar_Id(Long carId);

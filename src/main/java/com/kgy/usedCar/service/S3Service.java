@@ -45,7 +45,7 @@ public class S3Service {
     public void uploadConsultImages(MultipartFile[] files, ConsultEntity entity) throws IOException {
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
-            String fileName = "consult_" + entity.getId() + "/" + i + ".jpg";
+            String fileName = "consult_" +entity.getStatusType()+"_"+ entity.getId() + "/" + i + ".jpg";
 
             String imageUrl = uploadToS3(file, fileName);
             consultImageRepository.save(ConsultImageEntity.of(imageUrl, entity));
@@ -79,7 +79,7 @@ public class S3Service {
     }
 
     public void deleteConsultImages(ConsultEntity entity) {
-        String folderPrefix = "consult_" + entity.getId() + "/";
+        String folderPrefix = "consult_" +entity.getStatusType()+"_"+ entity.getId() + "/";
 
         ListObjectsV2Request listObjectsRequest = new ListObjectsV2Request()
                 .withBucketName(bucketName)

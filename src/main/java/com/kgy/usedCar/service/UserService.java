@@ -3,6 +3,7 @@ package com.kgy.usedCar.service;
 import com.kgy.usedCar.config.JwtTokenProvider;
 import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
 import com.kgy.usedCar.dto.response.user.CartResponseDto;
+import com.kgy.usedCar.dto.response.user.PurchaseResponse;
 import com.kgy.usedCar.dto.response.user.UserDto;
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +31,7 @@ public class UserService {
     private final JwtTokenProvider tokenProvider;
     private final CartRepository cartRepository;
     private final UsedCarRepository usedCarRepository;
+    private final PurchaseRequestRepository purchaseRequestRepository;
 
     @Transactional
     public void signup(UserSignupRequest request){
@@ -71,7 +74,7 @@ public class UserService {
     public List<CartResponseDto> getCart(String userId){
         UserEntity userEntity = findUserById(userId);
 
-        List<CartEntity> cartEntity = cartRepository.findByUser_Id(userEntity.getId());
+        List<CartEntity> cartEntity = cartRepository.findByUser_IdOrderByCreatedAtDesc(userEntity.getId());
 
         return cartEntity.stream()
                 .map(cartEntityList -> new CartResponseDto(
@@ -95,6 +98,40 @@ public class UserService {
         cartRepository.deleteById(cartEntity.getId());
     }
 
+    public void purchaseRequest(String userId, Long carId){
+        UserEntity userEntity = findUserById(userId);
+        UsedCarEntity usedCarEntity = findUsedCarById(carId);
+
+        boolean existPurchase = purchaseRequestRepository.existsByUserIdAndUsedCarId(userEntity.getId(), usedCarEntity.getId());
+
+        if (existPurchase) {
+            throw new UsedCarException(ErrorCode.DUPLICATED_PURCHASE);
+        }
+
+        PurchaseRequestEntity purchaseEntity = PurchaseRequestEntity.of(userEntity, usedCarEntity);
+        purchaseRequestRepository.save(purchaseEntity);
+    }
+
+    public List<PurchaseResponse> purchaseList(String userId){
+        UserEntity userEntity = findUserById(userId);
+
+        List<PurchaseRequestEntity> purchaseRequestEntityList = purchaseRequestRepository.findAllByUserIdOrderByCreatedAtDesc(userEntity.getId());
+
+        List<PurchaseResponse> purchaseResponseList = new ArrayList<>();
+
+        for(PurchaseRequestEntity entity : purchaseRequestEntityList){
+            PurchaseResponse purchaseDto = PurchaseResponse.fromEntity(entity);
+            purchaseResponseList.add(purchaseDto);
+        }
+
+        return purchaseResponseList;
+    }
+
+    public void purchaseDelete(Long purchaseId){
+        PurchaseRequestEntity purchaseRequest = purchaseRequestRepository.findById(purchaseId)
+                        .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
+        purchaseRequestRepository.deleteById(purchaseRequest.getId());
+    }
 
     private UserEntity findUserById(String userId) {
         return userRepository.findByUserId(userId)

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ConsultRepository extends JpaRepository<ConsultEntity, Long> {
-    List<ConsultEntity> findByUser_Id(Long userId);
+    List<ConsultEntity> findByUser_IdOrderByCreatedAtDesc(Long userId);
 
 }

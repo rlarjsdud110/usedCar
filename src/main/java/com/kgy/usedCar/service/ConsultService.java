@@ -63,7 +63,7 @@ public class ConsultService {
         UserEntity userEntity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
 
-        List<ConsultEntity> consultEntity = consultRepository.findByUser_Id(userEntity.getId());
+        List<ConsultEntity> consultEntity = consultRepository.findByUser_IdOrderByCreatedAtDesc(userEntity.getId());
 
         return consultEntity.stream()
                 .map(consultEntities -> new ConsultListResponseDto(
