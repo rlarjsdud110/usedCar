@@ -2,12 +2,9 @@ package com.kgy.usedCar.service;
 
 import com.kgy.usedCar.config.JwtTokenProvider;
 import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
-import com.kgy.usedCar.dto.response.user.CartResponseDto;
-import com.kgy.usedCar.dto.response.user.PurchaseResponse;
-import com.kgy.usedCar.dto.response.user.UserDto;
+import com.kgy.usedCar.dto.response.user.*;
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
-import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.exception.ErrorCode;
 import com.kgy.usedCar.exception.UsedCarException;
 import com.kgy.usedCar.model.*;
@@ -48,7 +45,7 @@ public class UserService {
         userRepository.save(UserEntity.of(request, encodedPassword));
     }
 
-    public String login(UserLoginRequest request){
+    public UserLoginResponseDto login(UserLoginRequest request){
         UserDto userDto = userRepository.findByUserId(request.getUserId()).map(UserDto::fromEntity)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND, request.getUserId()));
 
@@ -56,7 +53,7 @@ public class UserService {
             throw new UsedCarException(ErrorCode.INVALID_PASSWORD, "");
         }
 
-        return tokenProvider.generateToken(userDto);
+        return new UserLoginResponseDto(tokenProvider.generateToken(userDto), userDto.getRole());
     }
 
     public UserInfoResponseDto userInfo(String userId){

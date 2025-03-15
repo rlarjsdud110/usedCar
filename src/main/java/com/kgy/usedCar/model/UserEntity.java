@@ -39,7 +39,6 @@ public class UserEntity extends BaseEntity {
     private UserRole role = UserRole.USER;
 
     public static UserEntity of(UserSignupRequest request, String encodedPassword) {
-
         return UserEntity.builder()
                 .userId(request.getUserId())
                 .email(request.getEmail())
@@ -49,10 +48,20 @@ public class UserEntity extends BaseEntity {
                 .role(UserRole.USER)
                 .build();
     }
+
     public void update(UserUpdateRequestDto dto){
         this.setName(dto.getName());
         this.setEmail(dto.getEmail());
         this.setPhone(dto.getPhone());
     }
-
+    public static UserEntity CreatedAdmin(String adminId, String adminEmail, String adminName, String adminPassword, String adminPhone, UserRole role){
+        return UserEntity.builder()
+                .userId(adminId)
+                .email(adminEmail)
+                .name(adminName)
+                .password(adminPassword)
+                .phone(adminPhone)
+                .role(role)
+                .build();
+    }
 }

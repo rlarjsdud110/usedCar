@@ -1,6 +1,5 @@
 package com.kgy.usedCar.controller;
 
-import com.kgy.usedCar.dto.request.consult.ConsultRequestDto;
 import com.kgy.usedCar.dto.request.user.UserLoginRequest;
 import com.kgy.usedCar.dto.request.user.UserSignupRequest;
 import com.kgy.usedCar.dto.request.user.UserUpdateRequestDto;
@@ -8,11 +7,10 @@ import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.user.CartResponseDto;
 import com.kgy.usedCar.dto.response.user.PurchaseResponse;
 import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
-import com.kgy.usedCar.dto.response.user.UserLoginResponse;
+import com.kgy.usedCar.dto.response.user.UserLoginResponseDto;
 import com.kgy.usedCar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -31,9 +29,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request){
-        String token = userService.login(request);
-        return Response.success(new UserLoginResponse(token));
+    public Response<UserLoginResponseDto> login(@RequestBody UserLoginRequest request){
+        UserLoginResponseDto userLoginResponse = userService.login(request);
+        return Response.success(userLoginResponse);
     }
 
     @GetMapping("/userInfo")
