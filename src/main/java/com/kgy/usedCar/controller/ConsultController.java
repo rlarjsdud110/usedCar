@@ -38,13 +38,6 @@ public class ConsultController {
         return Response.success(consultList);
     }
 
-    @PutMapping("/{consultId}")
-    public Response<Void> consultUpdate(@PathVariable Long consultId, @RequestPart ConsultRequestDto dto,
-                                        @RequestPart(value = "file", required = false) MultipartFile[] multipartFile){
-        consultService.consultUpdate(consultId, dto, multipartFile);
-        return Response.success();
-    }
-
     @DeleteMapping("/{consultId}")
     public Response<Void> consultDelete(@PathVariable Long consultId){
         consultService.consultDelete(consultId);

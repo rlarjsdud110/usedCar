@@ -78,25 +78,6 @@ public class ConsultService {
     }
 
     @Transactional
-    public void consultUpdate(Long consultId, ConsultRequestDto dto, MultipartFile[] multipartFile){
-        try {
-            ConsultEntity consultEntity = consultRepository.findById(consultId)
-                    .orElseThrow(() -> new UsedCarException(ErrorCode.CONSULT_NOT_FOUND));
-
-            consultEntity.setEmail(dto.getEmail());
-            consultEntity.setTitle(dto.getTitle());
-            consultEntity.setContent(dto.getContent());
-            consultEntity.setStatusType(dto.getStatusType());
-
-            if (multipartFile != null && multipartFile.length > 0) {
-                s3Service.updateConsultImages(multipartFile, consultEntity);
-            }
-        } catch (IOException e) {
-            throw new UsedCarException(ErrorCode.FILE_UPLOAD_FAILED);
-        }
-    }
-
-    @Transactional
     public void consultDelete(Long consultId){
         ConsultEntity consultEntity = consultRepository.findById(consultId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CONSULT_NOT_FOUND));

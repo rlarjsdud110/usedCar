@@ -34,6 +34,9 @@ public class ConsultEntity extends BaseEntity{
     @Column(name = "task_type")
     private String taskType = "접수중";
 
+    @Column(name = "answer")
+    private String answer;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

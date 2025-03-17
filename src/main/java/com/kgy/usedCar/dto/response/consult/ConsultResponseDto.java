@@ -16,6 +16,7 @@ public class ConsultResponseDto {
     private String content;
     private List<String> imagesUrl;
     private LocalDateTime createdAt;
+    private String answer;
 
     public static ConsultResponseDto fromEntity(ConsultEntity entity, List<String> imagesUrl){
         return new ConsultResponseDto(
@@ -24,7 +25,8 @@ public class ConsultResponseDto {
                 entity.getTitle(),
                 entity.getContent(),
                 imagesUrl,
-                entity.getCreatedAt()
+                entity.getCreatedAt(),
+                entity.getAnswer()
         );
     }
 }
