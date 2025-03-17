@@ -6,6 +6,7 @@ import com.kgy.usedCar.exception.UsedCarException;
 import com.kgy.usedCar.model.NoticeEntity;
 import com.kgy.usedCar.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     public List<NoticeResponseDto> getAllNotice(){
-        List<NoticeEntity> noticeEntity = noticeRepository.findAll();
+        List<NoticeEntity> noticeEntity = noticeRepository.findAll(Sort.by(Sort.Order.desc("createdAt")));
 
         if (noticeEntity.isEmpty()){
             return null;
@@ -40,8 +41,8 @@ public class NoticeService {
     public void updateNotice(Long id, NoticeResponseDto dto){
         NoticeEntity noticeEntity = noticeRepository.findById(id)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.NOTICE_NOT_FOUND));
-
         noticeEntity.update(dto.getTitle(), dto.getContent());
+        noticeRepository.save(noticeEntity);
     }
 
     public void deleteNotice(Long id){

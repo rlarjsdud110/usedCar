@@ -20,23 +20,5 @@ public class NoticeController {
         return Response.success(noticeList);
     }
 
-    @PostMapping("/create")
-    public Response<Void> createNotice(@RequestBody NoticeResponseDto dto){
-        noticeService.createNotice(dto);
-        return Response.success();
-    }
-
-    @PutMapping("/update/{id}")
-    public Response<Void> updateNotice(@PathVariable Long id, @RequestBody NoticeResponseDto dto){
-        noticeService.updateNotice(id, dto);
-        return Response.success();
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public Response<Void> deleteNotice(@PathVariable Long id){
-        noticeService.deleteNotice(id);
-        return Response.success();
-    }
-
 
 }
