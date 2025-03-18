@@ -56,11 +56,7 @@ public class UsedCarEntity extends BaseEntity{
     @Column(name = "view_count")
     private int viewCount;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
-    public static UsedCarEntity fromDto(UsedCarDto dto, UserEntity user) {
+    public static UsedCarEntity fromDto(UsedCarDto dto) {
         return UsedCarEntity.builder()
                 .model(dto.getModel())
                 .carType(dto.getCarType())
@@ -75,7 +71,22 @@ public class UsedCarEntity extends BaseEntity{
                 .fuelType(dto.getFuelType())
                 .isHotDeal(dto.isHotDeal())
                 .viewCount(dto.getViewCount())
-                .user(user)
                 .build();
+    }
+
+    public UsedCarEntity update(UsedCarDto dto) {
+        this.model = dto.getModel();
+        this.carType = dto.getCarType();
+        this.transmission = dto.getTransmission();
+        this.licensePlate = dto.getLicensePlate();
+        this.engine = dto.getEngine();
+        this.color = dto.getColor();
+        this.modelYear = dto.getModelYear();
+        this.mileage = dto.getMileage();
+        this.price = dto.getPrice();
+        this.discountedPrice = dto.getDiscountedPrice();
+        this.fuelType = dto.getFuelType();
+        this.isHotDeal = dto.isHotDeal();
+        return this;
     }
 }

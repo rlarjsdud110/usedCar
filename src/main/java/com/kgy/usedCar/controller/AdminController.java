@@ -1,8 +1,9 @@
 package com.kgy.usedCar.controller;
 
 import com.kgy.usedCar.dto.request.admin.AdminConsultRequestDto;
-import com.kgy.usedCar.dto.request.consult.ConsultRequestDto;
+import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.Response;
+import com.kgy.usedCar.dto.response.admin.DashboardStatsDTO;
 import com.kgy.usedCar.dto.response.consult.ConsultListResponseDto;
 import com.kgy.usedCar.dto.response.notice.NoticeResponseDto;
 import com.kgy.usedCar.service.AdminService;
@@ -51,5 +52,28 @@ public class AdminController {
         return Response.success();
     }
 
+    @GetMapping("/dashboard")
+    public Response<DashboardStatsDTO> dashboard(){
+        DashboardStatsDTO dto = adminService.dashboard();
+        return Response.success(dto);
+    }
+
+    @DeleteMapping("/car/{carId}")
+    public Response<Void> deleteCar(@PathVariable Long carId){
+        adminService.deleteCar(carId);
+        return Response.success();
+    }
+
+    @PostMapping("/car/create")
+    public Response<Void> createCar(@RequestPart("dto") CarRequestDto dto, @RequestPart(value = "multipartFiles", required = false) MultipartFile[] multipartFiles){
+        adminService.createCar(dto, multipartFiles);
+        return Response.success();
+    }
+
+    @PutMapping("/car/update/{carId}")
+    public Response<Void> updatedCar(@PathVariable Long carId, @RequestPart("dto") CarRequestDto dto, @RequestPart(value = "multipartFiles", required = false) MultipartFile[] multipartFiles){
+        adminService.updatedCar(carId, dto, multipartFiles);
+        return Response.success();
+    }
 
 }

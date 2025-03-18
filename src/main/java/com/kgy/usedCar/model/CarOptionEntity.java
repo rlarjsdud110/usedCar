@@ -64,4 +64,17 @@ public class CarOptionEntity {
                 .usedCar(entity)
                 .build();
     }
+
+    public CarOptionEntity update(CarOptionsDto dto) {
+        this.frontRearSensor = dto.isFrontRearSensor();
+        this.rearSensor = dto.isRearSensor();
+        this.frontSensor = dto.isFrontSensor();
+        this.heatedSeat = dto.isHeatedSeat();
+        this.ventilatedSeat = dto.isVentilatedSeat();
+        this.smartKey = dto.isSmartKey();
+        this.navigation = dto.isNavigation();
+        this.ledHeadlight = dto.isLedHeadlight();
+        this.sunroof = dto.isSunroof();
+        return this;
+    }
 }

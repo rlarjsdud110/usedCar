@@ -120,8 +120,4 @@ public class S3Service {
         uploadCarImages(files, carId, imageTypes);
     }
 
-    public void updateConsultImages(MultipartFile[] files, ConsultEntity entity) throws IOException {
-        deleteConsultImages(entity);
-        uploadConsultImages(files, entity);
-    }
 }

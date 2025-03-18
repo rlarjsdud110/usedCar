@@ -19,18 +19,6 @@ public class UsedCarController {
 
     private final UsedCarService usedCarService;
 
-    @PostMapping("/create")
-    public Response<Void> createCar(@RequestPart("dto") CarRequestDto dto, @RequestPart("multipartFiles") MultipartFile[] multipartFiles){
-        usedCarService.createCar(dto, multipartFiles);
-        return Response.success();
-    }
-
-    @DeleteMapping("/delete/{carId}")
-    public Response<Void> delete(@PathVariable Long carId){
-        usedCarService.delete(carId);
-        return Response.success();
-    }
-
     @GetMapping("/hotDeals")
     public Response<List<HotDealResponseDto>> getHotDeals(){
         List<HotDealResponseDto> hotDealResponseList = usedCarService.getHotDeals();

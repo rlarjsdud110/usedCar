@@ -19,5 +19,4 @@ public class UsedCarDto {
     private String fuelType;
     private boolean isHotDeal = false;
     private int viewCount;
-    private Long userId;
 }

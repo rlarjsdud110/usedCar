@@ -26,40 +26,9 @@ public class UsedCarService {
 
     private final UsedCarRepository usedCarRepository;
     private final CarOptionRepository carOptionRepository;
-    private final UserRepository userRepository;
     private final CarImageRepository carImageRepository;
     private final CartRepository cartRepository;
 
-    private final S3Service s3Service;
-
-    @Transactional
-    public void createCar(CarRequestDto dto, MultipartFile[] multipartFiles){
-        try {
-            UserEntity userEntity = userRepository.findById(dto.getUsedCarDto().getUserId())
-                    .orElseThrow(() -> new UsedCarException(ErrorCode.USER_NOT_FOUND));
-
-            UsedCarEntity usedCarEntity = UsedCarEntity.fromDto(dto.getUsedCarDto(), userEntity);
-            UsedCarEntity usedCar = usedCarRepository.save(usedCarEntity);
-
-            CarOptionEntity carOptionEntity = CarOptionEntity.fromDto(dto.getCarOptionsDto(), usedCar);
-            carOptionRepository.save(carOptionEntity);
-
-            s3Service.uploadCarImages(multipartFiles, usedCar.getId(), dto.getImageTypes());
-
-        } catch (IOException e) {
-            throw new UsedCarException(ErrorCode.FILE_UPLOAD_FAILED);
-        }
-    }
-
-    @Transactional
-    public void delete(Long carId){
-        UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
-
-       s3Service.deleteCarImages(carId);
-       usedCarRepository.delete(usedCarEntity);
-
-    }
 
     public List<HotDealResponseDto> getHotDeals() {
         List<UsedCarEntity> usedCarEntities = usedCarRepository.findByIsHotDealTrue();
