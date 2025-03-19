@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.data.domain.Pageable;
+
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -38,12 +40,12 @@ public class UsedCarController {
     }
 
     @GetMapping("/detail/{carId}")
-    public Response<CarDetailResponseDto> carDetail(@PathVariable Long carId){
-        CarDetailResponseDto carDetail = usedCarService.carDetail(carId);
+    public Response<CarDetailResponseDto> carDetail(@PathVariable Long carId, Principal principal){
+        CarDetailResponseDto carDetail = usedCarService.carDetail(carId, principal);
         return Response.success(carDetail);
     }
 
-    @GetMapping("/recommend")
+    @GetMapping("/recommend")   
     public Response<List<RecommendCarDto>> recommendCar() {
         List<RecommendCarDto> recommendCarDto = usedCarService.recommendCar();
         return Response.success(recommendCarDto);

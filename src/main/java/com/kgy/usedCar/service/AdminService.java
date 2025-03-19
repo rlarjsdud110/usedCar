@@ -3,11 +3,13 @@ package com.kgy.usedCar.service;
 import com.kgy.usedCar.dto.request.admin.AdminConsultRequestDto;
 import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.admin.DashboardStatsDTO;
+import com.kgy.usedCar.dto.response.admin.PurchaseListResponseDto;
 import com.kgy.usedCar.dto.response.consult.ConsultListResponseDto;
 import com.kgy.usedCar.exception.ErrorCode;
 import com.kgy.usedCar.exception.UsedCarException;
 import com.kgy.usedCar.model.CarOptionEntity;
 import com.kgy.usedCar.model.ConsultEntity;
+import com.kgy.usedCar.model.PurchaseRequestEntity;
 import com.kgy.usedCar.model.UsedCarEntity;
 import com.kgy.usedCar.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final NoticeRepository noticeRepository;
     private final CarOptionRepository carOptionRepository;
+    private final PurchaseRequestRepository purchaseRequestRepository;
 
     private final S3Service s3Service;
 
@@ -117,4 +121,28 @@ public class AdminService {
             throw new UsedCarException(ErrorCode.FILE_UPLOAD_FAILED);
         }
     }
+
+    public List<PurchaseListResponseDto> purchaseList(){
+        List<PurchaseRequestEntity> purchaseRequest = purchaseRequestRepository.findAll();
+
+        List<PurchaseListResponseDto> responseDto = new ArrayList<>();
+        if(!purchaseRequest.isEmpty()){
+            for (PurchaseRequestEntity entity : purchaseRequest){
+
+                PurchaseListResponseDto value = PurchaseListResponseDto.of(entity.getUser().getName(), entity.getUser().getPhone(),
+                        entity.getUsedCar().getId(), entity.getId(), entity.getCreatedAt());
+
+                responseDto.add(value);
+            }
+        }
+        return responseDto;
+    }
+
+    public void purchaseDelete(Long purchaseId){
+        PurchaseRequestEntity purchaseRequest = purchaseRequestRepository.findById(purchaseId)
+                .orElseThrow(() -> new UsedCarException(ErrorCode.PURCHASE_NOT_FOUND));
+
+        purchaseRequestRepository.deleteById(purchaseRequest.getId());
+    }
+
 }

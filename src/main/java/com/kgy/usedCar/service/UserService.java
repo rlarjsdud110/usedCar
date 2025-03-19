@@ -64,7 +64,6 @@ public class UserService {
     public UserInfoResponseDto update(String userId, UserUpdateRequestDto dto){
         UserEntity userEntity = findUserById(userId);
         userEntity.update(dto);
-
         return UserInfoResponseDto.fromEntity(userEntity);
     }
 
@@ -88,14 +87,16 @@ public class UserService {
         cartRepository.save(CartEntity.of(userEntity, usedCarEntity));
     }
 
-    public void deleteCart(Long carId){
-        CartEntity cartEntity = cartRepository.findByUsedCar_Id(carId)
-                .orElseThrow(() -> new UsedCarException(ErrorCode.CART_NOT_FOUND));
+    public void deleteCart(Long carId, String userId){
+        UserEntity userEntity = findUserById(userId);
+
+        CartEntity cartEntity = cartRepository.findByUserIdAndUsedCarId(userEntity.getId() ,carId)
+                        .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
 
         cartRepository.deleteById(cartEntity.getId());
     }
 
-    public void purchaseRequest(String userId, Long carId){
+    public void purchaseRequest(Long carId, String userId){
         UserEntity userEntity = findUserById(userId);
         UsedCarEntity usedCarEntity = findUsedCarById(carId);
 

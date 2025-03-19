@@ -4,6 +4,7 @@ import com.kgy.usedCar.dto.request.admin.AdminConsultRequestDto;
 import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.admin.DashboardStatsDTO;
+import com.kgy.usedCar.dto.response.admin.PurchaseListResponseDto;
 import com.kgy.usedCar.dto.response.consult.ConsultListResponseDto;
 import com.kgy.usedCar.dto.response.notice.NoticeResponseDto;
 import com.kgy.usedCar.service.AdminService;
@@ -76,4 +77,15 @@ public class AdminController {
         return Response.success();
     }
 
+    @GetMapping("/purchase")
+    public Response<List<PurchaseListResponseDto>> purchaseList(){
+        List<PurchaseListResponseDto> purchaseListResponse = adminService.purchaseList();
+        return Response.success(purchaseListResponse);
+    }
+
+    @DeleteMapping("/purchase/{purchaseId}")
+    public Response<Void> purchaseDelete(@PathVariable Long purchaseId){
+        adminService.purchaseDelete(purchaseId);
+        return Response.success();
+    }
 }

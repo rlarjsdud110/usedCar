@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,7 @@ public class UsedCarService {
     private final CarOptionRepository carOptionRepository;
     private final CarImageRepository carImageRepository;
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
 
     public List<HotDealResponseDto> getHotDeals() {
@@ -82,7 +84,7 @@ public class UsedCarService {
         return new PageImpl<>(searchResponseDto, pageable, usedCarEntity.getTotalElements());
     }
 
-    public CarDetailResponseDto carDetail(Long carId){
+    public CarDetailResponseDto carDetail(Long carId, Principal principal){
         UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
 
@@ -94,7 +96,10 @@ public class UsedCarService {
 
         List<String> carImagesUrl = getImageUrls(carId);
 
-        boolean isCart = cartRepository.existsByUsedCar_Id(carId);
+        UserEntity userEntity = principal != null
+                ? userRepository.findByUserId(principal.getName()).orElseThrow(()-> new UsedCarException(ErrorCode.USER_NOT_FOUND))
+                : null;
+        boolean isCart = userEntity != null && cartRepository.existsByUserIdAndUsedCarId(userEntity.getId(), carId);
 
         return CarDetailResponseDto.fromEntity(usedCarEntity, carOptionsEntity, carImagesUrl, isCart);
     }

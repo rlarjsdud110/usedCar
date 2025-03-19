@@ -59,14 +59,14 @@ public class UserController {
     }
 
     @DeleteMapping("/cart/delete/{carId}")
-    public Response<Void> deleteCart(@PathVariable Long carId){
-        userService.deleteCart(carId);
+    public Response<Void> deleteCart(@PathVariable Long carId, Principal principal){
+        userService.deleteCart(carId, principal.getName());
         return Response.success();
     }
 
     @PostMapping("/purchase/{carId}")
-    public Response<Void> purchaseRequest(Principal principal, @PathVariable Long carId){
-        userService.purchaseRequest(principal.getName(), carId);
+    public Response<Void> purchaseRequest(@PathVariable Long carId, Principal principal){
+        userService.purchaseRequest(carId, principal.getName());
         return Response.success();
     }
 

@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface CartRepository extends JpaRepository<CartEntity, Long> {
     List<CartEntity> findByUser_IdOrderByCreatedAtDesc(Long userId);
     Optional<CartEntity> findByUsedCar_Id(Long carId);
+    Optional<CartEntity> findByUserIdAndUsedCarId(Long userId, Long usedCarId);
 
-    boolean existsByUsedCar_Id(Long carId);
+    boolean existsByUserIdAndUsedCarId(Long userId, Long usedCarId);
 }
