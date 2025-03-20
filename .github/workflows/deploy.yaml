@@ -1,0 +1,22 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  S3_BUCKET_NAME: used-car-project-bucket
+  CODE_DEPLOY_APPLICATION_NAME: CODE-DEPLOT-USEDCAR
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CODE-DEPLOY-GROUP
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+      
