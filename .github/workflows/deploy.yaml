@@ -7,7 +7,7 @@ on:
 
 env:
   S3_BUCKET_NAME: used-car-project-bucket
-  CODE_DEPLOY_APPLICATION_NAME: CODE-DEPLOT-USEDCAR
+  CODE_DEPLOY_APPLICATION_NAME: CODE-DEPLOY-USEDCAR
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: CODE-DEPLOY-GROUP
 
 jobs:
@@ -26,6 +26,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
+
+      - name: Generate application.yml from Secret
+        run: |
+          mkdir -p src/main/resources
+          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
 
       - name: Build with Gradle
         run: ./gradlew build
@@ -50,4 +55,4 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME.bundleType=zip,key=$GITHUB_SHA.zip
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
