@@ -10,4 +10,6 @@ import java.util.List;
 public interface ConsultRepository extends JpaRepository<ConsultEntity, Long> {
     List<ConsultEntity> findByUser_IdOrderByCreatedAtDesc(Long userId);
     long countByTaskType(String taskType);
+
+    List<ConsultEntity> findTop3ByOrderByCreatedAtDesc();
 }

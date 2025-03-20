@@ -5,11 +5,15 @@ import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.Response;
 import com.kgy.usedCar.dto.response.admin.DashboardStatsDTO;
 import com.kgy.usedCar.dto.response.admin.PurchaseListResponseDto;
+import com.kgy.usedCar.dto.response.admin.RecentAdminDataDto;
 import com.kgy.usedCar.dto.response.consult.ConsultListResponseDto;
 import com.kgy.usedCar.dto.response.notice.NoticeResponseDto;
+import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.service.AdminService;
 import com.kgy.usedCar.service.NoticeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +63,12 @@ public class AdminController {
         return Response.success(dto);
     }
 
+    @GetMapping("recent")
+    public Response<List<RecentAdminDataDto>> recentAdminData(){
+        List<RecentAdminDataDto> recentAdminData = adminService.recentAdminData();
+        return Response.success(recentAdminData);
+    }
+
     @DeleteMapping("/car/{carId}")
     public Response<Void> deleteCar(@PathVariable Long carId){
         adminService.deleteCar(carId);
@@ -88,4 +98,11 @@ public class AdminController {
         adminService.purchaseDelete(purchaseId);
         return Response.success();
     }
+
+    @GetMapping("/users")
+    public Response<Page<UserInfoResponseDto>> userInfoList(@RequestParam(required = false) String search, Pageable pageable){
+        Page<UserInfoResponseDto> userInfoResponse = adminService.userInfoList(search, pageable);
+        return Response.success(userInfoResponse);
+    }
+
 }

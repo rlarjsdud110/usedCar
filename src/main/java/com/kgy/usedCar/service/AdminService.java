@@ -4,15 +4,17 @@ import com.kgy.usedCar.dto.request.admin.AdminConsultRequestDto;
 import com.kgy.usedCar.dto.request.car.CarRequestDto;
 import com.kgy.usedCar.dto.response.admin.DashboardStatsDTO;
 import com.kgy.usedCar.dto.response.admin.PurchaseListResponseDto;
+import com.kgy.usedCar.dto.response.admin.RecentAdminDataDto;
 import com.kgy.usedCar.dto.response.consult.ConsultListResponseDto;
+import com.kgy.usedCar.dto.response.user.UserInfoResponseDto;
 import com.kgy.usedCar.exception.ErrorCode;
 import com.kgy.usedCar.exception.UsedCarException;
-import com.kgy.usedCar.model.CarOptionEntity;
-import com.kgy.usedCar.model.ConsultEntity;
-import com.kgy.usedCar.model.PurchaseRequestEntity;
-import com.kgy.usedCar.model.UsedCarEntity;
+import com.kgy.usedCar.model.*;
 import com.kgy.usedCar.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +71,33 @@ public class AdminService {
         long totalNoticesCount = noticeRepository.count();
 
         return DashboardStatsDTO.of(vehicleCount, totalUsersCount, unresolvedConsultCount, totalNoticesCount);
+    }
+
+    public List<RecentAdminDataDto> recentAdminData(){
+        List<UserEntity> userEntity = userRepository.findTop3ByOrderByCreatedAtDesc();
+        List<NoticeEntity> noticeEntity = noticeRepository.findTop3ByOrderByCreatedAtDesc();
+        List<UsedCarEntity> usedCarEntity = usedCarRepository.findTop3ByOrderByCreatedAtDesc();
+        List<ConsultEntity> consultEntity = consultRepository.findTop3ByOrderByCreatedAtDesc();
+
+        List<RecentAdminDataDto> recentAdminData = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            UsedCarEntity usedCar = i < usedCarEntity.size() ? usedCarEntity.get(i) : null;
+            NoticeEntity notice = i < noticeEntity.size() ? noticeEntity.get(i) : null;
+            ConsultEntity consult = i < consultEntity.size() ? consultEntity.get(i) : null;
+            UserEntity user = i < userEntity.size() ? userEntity.get(i) : null;
+
+            RecentAdminDataDto dto = RecentAdminDataDto.of(
+                    usedCar != null ? usedCar : new UsedCarEntity(),
+                    notice != null ? notice : new NoticeEntity(),
+                    consult != null ? consult : new ConsultEntity(),
+                    user != null ? user : new UserEntity()
+            );
+
+            recentAdminData.add(dto);
+        }
+
+        return recentAdminData;
     }
 
     @Transactional
@@ -143,6 +172,26 @@ public class AdminService {
                 .orElseThrow(() -> new UsedCarException(ErrorCode.PURCHASE_NOT_FOUND));
 
         purchaseRequestRepository.deleteById(purchaseRequest.getId());
+    }
+
+    public Page<UserInfoResponseDto> userInfoList(String search, Pageable pageable){
+        Page<UserEntity> userEntityPage;
+
+        if (search == null || search.trim().isEmpty()) {
+            userEntityPage = userRepository.findByRole(UserRole.USER, pageable);
+        } else {
+            userEntityPage = userRepository.findByRoleAndEmailContainingIgnoreCaseOrRoleAndNameContainingIgnoreCase(UserRole.USER, search, UserRole.USER, search, pageable);
+        }
+
+        if (userEntityPage.isEmpty()) {
+            return Page.empty();
+        }
+
+        List<UserInfoResponseDto> userInfoResponseDto = userEntityPage.stream()
+                .map(UserInfoResponseDto::fromEntity)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(userInfoResponseDto, pageable, userEntityPage.getTotalElements());
     }
 
 }
