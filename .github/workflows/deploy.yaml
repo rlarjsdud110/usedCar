@@ -33,7 +33,10 @@ jobs:
           echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
 
       - name: Build with Gradle
-        run: ./gradlew build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: --build-cache --parallel :application:test --stacktrace --info
+          cache-read-only: false
 
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA .
