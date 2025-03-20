@@ -35,11 +35,11 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: --build-cache --parallel test --stacktrace --info
+          arguments: build --build-cache --parallel --stacktrace --info
           cache-read-only: false
 
       - name: Make zip file
-        run: zip -r ./$GITHUB_SHA .
+        run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
 
       - name: Configure AWS credentials
