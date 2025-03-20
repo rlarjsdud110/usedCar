@@ -33,8 +33,7 @@ jobs:
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
 
       - name: Build with Gradle
-        run: ./gradlew clean build --build-cache --parallel --stacktrace --info
-        # 만약 Gradle Wrapper를 사용한다면 gradle/gradle-build-action을 대신 실행합니다.
+        run: ./gradlew clean build --stacktrace --info
         
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
