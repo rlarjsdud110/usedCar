@@ -18,15 +18,15 @@ public class AdminAccountInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${admin.adminId}")
+    @Value("${admin.adminId:not found!}")
     String adminId;
-    @Value("${admin.password}")
+    @Value("${admin.password:not found!}")
     String adminPassword;
-    @Value("${admin.adminEmail}")
+    @Value("${admin.adminEmail:not found!}")
     String adminEmail;
-    @Value("${admin.adminPhone}")
+    @Value("${admin.adminPhone:not found!}")
     String adminPhone;
-    @Value("${admin.adminName}")
+    @Value("${admin.adminName:not found!}")
     String adminName;
 
     @EventListener(ApplicationReadyEvent.class)

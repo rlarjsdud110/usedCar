@@ -21,10 +21,10 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret_key}")
+    @Value("${jwt.secret_key:not found!}")
     private String secretKey;
 
-    @Value("${jwt.token_expired_time}")
+    @Value("${jwt.token_expired_time:not found!}")
     private long expirationTime;
 
     public String generateToken(UserDto userDto){

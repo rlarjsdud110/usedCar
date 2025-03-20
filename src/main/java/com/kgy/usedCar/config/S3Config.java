@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3Config {
-    @Value("${spring.cloud.aws.credentials.access-key}")
+    @Value("${spring.cloud.aws.credentials.access-key:not found!}")
     private String accessKey;
 
-    @Value("${spring.cloud.aws.credentials.secret-key}")
+    @Value("${spring.cloud.aws.credentials.secret-key:not found!}")
     private String secretKey;
 
-    @Value("${spring.cloud.aws.region.static}")
+    @Value("${spring.cloud.aws.region.static:not found!}")
     private String region;
 
     @Bean

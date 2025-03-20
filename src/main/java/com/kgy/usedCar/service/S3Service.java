@@ -27,7 +27,7 @@ public class S3Service {
     private final CarImageRepository carImageRepository;
     private final ConsultImageRepository consultImageRepository;
 
-    @Value("${spring.cloud.aws.s3.bucket}")
+    @Value("${spring.cloud.aws.s3.bucket:not found!}")
     private String bucketName;
 
 
