@@ -35,7 +35,7 @@ jobs:
           echo "admin.adminEmail=${{ secrets.ADMIN_EMAIL }}" >> src/main/resources/application.yml
           echo "admin.adminPhone=${{ secrets.ADMIN_PHONE }}" >> src/main/resources/application.yml
           echo "admin.adminName=${{ secrets.ADMIN_NAME }}" >> src/main/resources/application.yml
-          echo "spring.datasource.url=${{ secrets.DB_ENDPOINT }}" >> src/main/resources/application.yml
+          echo "spring.datasource.url=jdbc:mysql://${{ secrets.DB_ENDPOINT }}:3306/${{ secrets.DB_NAME }}?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8" >> src/main/resources/application.yml
           echo "spring.datasource.username=${{ secrets.DB_USERNAME }}" >> src/main/resources/application.yml
           echo "spring.datasource.password=${{ secrets.DB_PASSWORD }}" >> src/main/resources/application.yml
           echo "jwt.secret_key=${{ secrets.JWT_SECRET_KEY }}" >> src/main/resources/application.yml
