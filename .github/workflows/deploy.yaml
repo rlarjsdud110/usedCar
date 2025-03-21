@@ -31,9 +31,14 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
-        
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: --build-cache --parallel :usedCar:test --stacktrace --info
+          cache-read-only: false
+
       - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
+        run: zip -r ./$GITHUB_SHA .
         shell: bash
 
       - name: Configure AWS credentials
