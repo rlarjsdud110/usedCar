@@ -31,9 +31,6 @@ jobs:
         run: |
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
-
-      - name: Build with Gradle
-        run: ./gradlew clean build --stacktrace --info
         
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
