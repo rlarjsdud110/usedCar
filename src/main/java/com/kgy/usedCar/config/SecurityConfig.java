@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .mvcMatchers("/api/users/signup", "/api/users/login", "/api/cars/hotDeals", "/api/cars/detail/**",
                                 "/api/cars/rankings", "/api/notice/list", "/api/cars/search/**", "/api/cars/carList/**",
-                                "/api/cars/recommend").permitAll()
+                                "/api/cars/recommend", "/actuator/health").permitAll()
                         .mvcMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
