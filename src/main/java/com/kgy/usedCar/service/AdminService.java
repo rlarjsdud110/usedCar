@@ -53,7 +53,6 @@ public class AdminService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public void consultAnswer(Long consultId, AdminConsultRequestDto dto){
         ConsultEntity consultEntity = consultRepository.findById(consultId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CONSULT_NOT_FOUND));
@@ -100,7 +99,6 @@ public class AdminService {
         return recentAdminData;
     }
 
-    @Transactional
     public void deleteCar(Long carId){
         UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CAR_NOT_FOUND));
@@ -109,7 +107,6 @@ public class AdminService {
         usedCarRepository.delete(usedCarEntity);
     }
 
-    @Transactional
     public void createCar(CarRequestDto dto, MultipartFile[] multipartFiles){
         try {
             UsedCarEntity usedCarEntity = UsedCarEntity.fromDto(dto.getUsedCarDto());
@@ -127,7 +124,6 @@ public class AdminService {
         }
     }
 
-    @Transactional
     public void updatedCar(Long carId, CarRequestDto dto, MultipartFile[] multipartFiles){
         try {
             UsedCarEntity usedCarEntity = usedCarRepository.findById(carId)

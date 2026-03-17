@@ -27,19 +27,23 @@ public class S3Service {
     private final CarImageRepository carImageRepository;
     private final ConsultImageRepository consultImageRepository;
 
-    @Value("${spring.cloud.aws.s3.bucket:not found!}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String bucketName;
 
 
     public void uploadCarImages(MultipartFile[] files, Long carId, List<String> imageTypes) throws IOException {
+        List<CarImageEntity> carImages = new ArrayList<>();
+
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
             String imageType = imageTypes.get(i);
             String fileName = carId + "/" + imageType + ".jpg";
-
             String imageUrl = uploadToS3(file, fileName);
-            carImageRepository.save(CarImageEntity.fromDto(carId, imageUrl, imageType));
+
+            carImages.add(CarImageEntity.fromDto(carId, imageUrl, imageType));
         }
+
+        carImageRepository.saveAll(carImages);
     }
 
     public void uploadConsultImages(MultipartFile[] files, ConsultEntity entity) throws IOException {

@@ -30,7 +30,6 @@ public class UserService {
     private final UsedCarRepository usedCarRepository;
     private final PurchaseRequestRepository purchaseRequestRepository;
 
-    @Transactional
     public void signup(UserSignupRequest request){
         userRepository.findByUserId(request.getUserId()).ifPresent(user -> {
             throw new UsedCarException(ErrorCode.DUPLICATED_USER_ID, String.format("%s이 중복된 아이디 입니다.", request.getUserId()));

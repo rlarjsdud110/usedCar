@@ -15,6 +15,9 @@
 # AWS User-specific
 .idea/**/aws.xml
 
+# Ignore application.yml
+src/main/resources/application-dev.yml
+
 # Generated files
 .idea/**/contentModel.xml
 
@@ -317,5 +320,3 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,intellij+all,intellij+iml,gradle,java,macos
 
-# Ignore application.yml
-application.yml

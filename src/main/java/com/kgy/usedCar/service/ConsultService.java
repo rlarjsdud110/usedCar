@@ -31,7 +31,6 @@ public class ConsultService {
     private final ConsultImageRepository consultImageRepository;
 
 
-    @Transactional
     public void consultRequest(String userId, ConsultRequestDto dto, MultipartFile[] multipartFile){
         try {
             UserEntity userEntity = userRepository.findByUserId(userId)
@@ -77,7 +76,6 @@ public class ConsultService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public void consultDelete(Long consultId){
         ConsultEntity consultEntity = consultRepository.findById(consultId)
                 .orElseThrow(() -> new UsedCarException(ErrorCode.CONSULT_NOT_FOUND));

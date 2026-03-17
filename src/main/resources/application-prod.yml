@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    aws:
+      s3:
+        bucket: ${AWS_S3_BUCKET_NAME}
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  servlet:
+    multipart:
+      location: /home/ubuntu/uploads
+
+jwt:
+  issuer: ${JWT_ISSUER}
+  secret_key: ${JWT_SECRET_KEY}
+
+  admin:
+    admin_id: ${ADMIN_ID}
+    admin_password: ${ADMIN_PASSWORD}
+    admin_email: ${ADMIN_EMAIL}
+    admin_phone: ${ADMIN_PHONE}
+    admin_name: ${ADMIN_NAME}
