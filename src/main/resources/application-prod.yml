@@ -21,9 +21,9 @@ jwt:
   issuer: ${JWT_ISSUER}
   secret_key: ${JWT_SECRET_KEY}
 
-  admin:
-    admin_id: ${ADMIN_ID}
-    admin_password: ${ADMIN_PASSWORD}
-    admin_email: ${ADMIN_EMAIL}
-    admin_phone: ${ADMIN_PHONE}
-    admin_name: ${ADMIN_NAME}
+admin:
+  admin_id: ${ADMIN_ID}
+  admin_password: ${ADMIN_PASSWORD}
+  admin_email: ${ADMIN_EMAIL}
+  admin_phone: ${ADMIN_PHONE}
+  admin_name: ${ADMIN_NAME}
