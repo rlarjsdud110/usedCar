@@ -1,5 +1,5 @@
 # 1. 빌드된 .jar 파일을 실행할 수 있는 자바 환경(JDK)을 가져옵니다.
-FROM openjdk:17-jdk-slim
+FROM amazoncorretto:17-alpine
 
 # 2. 빌드 결과물인 jar 파일의 위치를 변수로 지정합니다. (보통 build/libs 폴더에 생성됨)
 ARG JAR_FILE=build/libs/*.jar
