@@ -44,15 +44,12 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. 기존 컨테이너 및 네트워크 정리 (nginx-proxy 포함)
             docker stop spring-app mysql-db nginx-proxy || true
             docker rm spring-app mysql-db nginx-proxy || true
             docker network rm used-car-net || true
 
-            # 2. 전용 네트워크 생성
             docker network create used-car-net
 
-            # 3. MySQL 실행 (네트워크 연결)
             docker run -d --name mysql-db \
               --network used-car-net \
               -e MYSQL_ROOT_PASSWORD='${{ secrets.DB_PASSWORD }}' \
